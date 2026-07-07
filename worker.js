@@ -1,17 +1,10 @@
 'use strict'
-
-/**
- * static files (404.html, sw.js, conf.js)
- */
 const ASSET_URL = 'https://hunshcn.github.io/gh-proxy/'
 const PREFIX = '/'
 const Config = {
     jsdelivr: 0
 }
-
-const whiteList = [] // 白名单
-
-/** @type {ResponseInit} */
+const whiteList = []
 const PREFLIGHT_INIT = {
     status: 204,
     headers: new Headers({
@@ -20,7 +13,6 @@ const PREFLIGHT_INIT = {
         'access-control-max-age': '1728000',
     }),
 }
-
 const exp1 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i
 const exp2 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:blob|raw)\/.*$/i
 const exp3 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:info|git-).*$/i
@@ -30,7 +22,7 @@ const exp6 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i
 
 function makeRes(body, status = 200, headers = {}) {
     headers['access-control-allow-origin'] = '*'
-    headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive' // 防爬虫收录
+    headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
     return new Response(body, { status, headers })
 }
 
@@ -45,17 +37,11 @@ function checkUrl(u) {
     return false
 }
 
-/**
- * 密码验证逻辑
- */
 function verifyPassword(inputCode, env) {
     const correctPassword = env && env.MY_TOTP_SECRET ? env.MY_TOTP_SECRET : 'NineBytes666';
     return inputCode.trim() === correctPassword.trim();
 }
 
-/**
- * Module Export 导出模式
- */
 export default {
     async fetch(request, env, ctx) {
         try {
@@ -66,22 +52,18 @@ export default {
     }
 }
 
-/**
- * @param {Request} req
- * @param {Object} env
- */
 async function fetchHandler(req, env) {
     const urlStr = req.url
     const urlObj = new URL(urlStr)
 
-    // 1. 防爬虫
+
     if (urlObj.pathname === '/robots.txt') {
         return new Response('User-agent: *\nDisallow: /', {
             status: 200, headers: { 'Content-Type': 'text/plain', 'X-Robots-Tag': 'noindex, nofollow' }
         })
     }
 
-    // 2. 根目录返回前端 HTML 界面
+
     if (urlObj.pathname === PREFIX || urlObj.pathname === '/index.html' || urlObj.pathname === '/') {
         if (!urlObj.searchParams.get('q')) {
             return new Response(HTML_TEMPLATE, {
@@ -94,7 +76,7 @@ async function fetchHandler(req, env) {
         }
     }
 
-    // 3. 拦截并进行密码验证
+
     const inputCode = urlObj.searchParams.get('code')
     const isProxyRequest = urlObj.searchParams.get('q') || urlObj.href.slice(urlObj.origin.length + PREFIX.length).includes('github')
     
@@ -109,7 +91,6 @@ async function fetchHandler(req, env) {
         return Response.redirect('https://' + urlObj.host + PREFIX + path + '?code=' + inputCode, 301)
     }
 
-    // 清理 URL 并提取出真正的 GitHub 链接
     let cleanHref = urlObj.href
     const cleanUrlObj = new URL(urlStr)
     cleanUrlObj.searchParams.delete('code')
@@ -139,10 +120,6 @@ async function fetchHandler(req, env) {
     }
 }
 
-/**
- * @param {Request} req
- * @param {string} pathname
- */
 function httpHandler(req, pathname) {
     const reqHdrRaw = req.headers
 
@@ -162,8 +139,7 @@ function httpHandler(req, pathname) {
         urlStr = 'https://' + urlStr
     }
     const urlObj = newUrl(urlStr)
-
-    /** @type {RequestInit} */
+    
     const reqInit = {
         method: req.method,
         headers: reqHdrNew,
@@ -173,10 +149,6 @@ function httpHandler(req, pathname) {
     return proxy(urlObj, reqInit)
 }
 
-/**
- * @param {URL} urlObj
- * @param {RequestInit} reqInit
- */
 async function proxy(urlObj, reqInit) {
     const res = await fetch(urlObj.href, reqInit)
     const resHdrOld = res.headers
@@ -204,9 +176,6 @@ async function proxy(urlObj, reqInit) {
     return new Response(res.body, { status, headers: resHdrNew })
 }
 
-/**
- * 内嵌前端 HTML 模板
- */
 const HTML_TEMPLATE = `
 <!DOCTYPE html>
 <html lang="zh-CN">
