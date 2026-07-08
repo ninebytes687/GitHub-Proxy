@@ -1,5 +1,5 @@
 # GitHub-Proxy  
-> Cloudflare Workers 无服务器 GitHub 资源加速反向代理工具
+> Cloudflare Workers无服务器GitHub文件下载加速反向代理项目
 
 ## 📌 项目简介
 本项目在开源项目[hunshcn/gh-proxy](https://github.com/hunshcn/gh-proxy)基础上二次优化改造，利用 Cloudflare Workers 实现轻量化反向代理，解决国内 GitHub 下载慢、连接超时问题。  
