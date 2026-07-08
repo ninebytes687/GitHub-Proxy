@@ -14,4 +14,4 @@ Demo 站点：[https://gh-proxy.ninebytes.top/](https://gh-proxy.ninebytes.top/)
 
 ## 🛠️ 部署使用指南
 完整分步部署教程请看我的博客：  
-[Cloudflare Workers 反向代理GitHub组件加速部署教程](https://blog.ninebytes.top/blog/cloudflare-workers%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86github%E6%96%87%E4%BB%B6%E5%8A%A0%E9%80%9F%E9%83%A8%E7%BD%B2)
+[Cloudflare Workers 反向代理GitHub文件加速部署教程](https://blog.ninebytes.top/blog/cloudflare-workers%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86github%E6%96%87%E4%BB%B6%E5%8A%A0%E9%80%9F%E9%83%A8%E7%BD%B2)
