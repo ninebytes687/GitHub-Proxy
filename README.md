@@ -9,7 +9,7 @@
 - raw 原始文件直链加速  
 
 ## 🔗 在线演示  
-Demo 站点：[https://gh-proxy.ninebytes.top/](https://gh-proxy.ninebytes.top/)
+Demo 站点：[https://gh-proxy.ninebytes.top/](https://gh-proxy.ninebytes.top/)  
 注意：演示节点为个人私有服务，不对外开放，使用请自行部署。
 
 ## 🛠️ 部署使用指南
